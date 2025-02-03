@@ -14,7 +14,7 @@ class LogisticRegression:
         self.w=np.zeros(n_features)
         self.b=0
         for i in range(self.max_iter):
-            y_pred=self.sigmoid(np.dot(X, self.weights)+self.b)
+            y_pred=self.sigmoid(np.dot(X, self.w)+self.b)
 
             dw=(1/n_samples)*(np.dot(X.T,(y_pred-y)))
             db=(1/n_samples)*np.sum(y_pred-y)
