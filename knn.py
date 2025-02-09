@@ -29,5 +29,3 @@ class KNN:
             label=Counter(nearest_labels).most_common(1)[0][0]
             y_pred.append(label)
         return y_pred
-
-        

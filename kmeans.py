@@ -65,5 +65,39 @@ class KMeans:
             cluster.append(nearest)
         return cluster
 
+#step1: 
+class KMeans:
+    def __init__(self, k, max_iter):
+        self.k=k
+        self.max_iter=max_iter
+        self.centroids=None
+        self.clusters=[]
+    
+    def fit(self, X):
+        n_samples=len(X)
+        self.centroids=X[np.random.choice(n_samples,self.k, replace=False)]
 
-                    
+        for _ in range(self.max_iter):
+            clusters=[[] for _ in range(self.k)]
+            for x in X:
+                distances=np.linalg.norm(x-self.centroids,axis=1)
+                nearest=np.argmin(distances)
+                clusters[nearest].append(x)
+            
+            new_centroids=[]
+            for cluster in clusters:
+                new_centroids.append(np.mean(cluster), axis=0)
+            
+            if np.linalg.norm(new_centroids-self.centroids)<1e-6:
+                break
+            self.centroids=new_centroids
+
+    
+    def predict(self, X):
+        cluster=[]
+        for x in X:
+            distances=np.linalg.norm(x-self.centroids, axis=1)
+            nearest=np.argmin(distances)
+            cluster.append(nearest)
+        return cluster
+    
