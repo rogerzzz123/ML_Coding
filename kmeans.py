@@ -65,39 +65,44 @@ class KMeans:
             cluster.append(nearest)
         return cluster
 
-#step1: 
+ 
 class KMeans:
+    
     def __init__(self, k, max_iter):
         self.k=k
         self.max_iter=max_iter
         self.centroids=None
-        self.clusters=[]
+        self.clusters=None
     
     def fit(self, X):
-        n_samples=len(X)
-        self.centroids=X[np.random.choice(n_samples,self.k, replace=False)]
+        random_idx=np.random.choice(len(X), size=self.k, replace=False)
+        self.centroids=X[random_idx]
 
         for _ in range(self.max_iter):
-            clusters=[[] for _ in range(self.k)]
-            for x in X:
-                distances=np.linalg.norm(x-self.centroids,axis=1)
-                nearest=np.argmin(distances)
-                clusters[nearest].append(x)
-            
-            new_centroids=[]
-            for cluster in clusters:
-                new_centroids.append(np.mean(cluster), axis=0)
-            
-            if np.linalg.norm(new_centroids-self.centroids)<1e-6:
+            distances=np.linalg.norm(X[:,np.newaxis]- self.centroids, axis=2)
+            nearest=np.argmin(distances, axis=1)
+            new_centroids = np.array([X[nearest == i].mean(axis=0) if np.any(nearest == i) else self.centroids[i] for i in range(self.k)])
+            if np.linalg.norm(self.centroids - new_centroids)<1e-6:
                 break
             self.centroids=new_centroids
-
     
     def predict(self, X):
-        cluster=[]
-        for x in X:
-            distances=np.linalg.norm(x-self.centroids, axis=1)
-            nearest=np.argmin(distances)
-            cluster.append(nearest)
-        return cluster
+        distances=np.linalg.norm(X[:,np.newaxis]-self.centroids, axis=2)
+        labels=np.argmin(distances, axis=1)
+        return labels
     
+# Create sample data
+X = np.array([
+    [1, 2], [1, 4], [1, 0],
+    [10, 2], [10, 4], [10, 0]
+])
+print(X.shape)
+
+# Train K-Means
+kmeans = KMeans(k=2, max_iter=100)
+kmeans.fit(X)
+# Predict cluster labels
+labels = kmeans.predict(X)
+print("Cluster assignments:", labels)
+print("Centroids:", kmeans.centroids)
+            

@@ -6,6 +6,8 @@
 # update w,b
 # step 3: predict using params
 
+import numpy as np
+
 class LinearRegression:
     def __init__(self, lr=0.01, max_iter=1000):
         self.lr=lr
@@ -15,8 +17,8 @@ class LinearRegression:
 
     def fit(self, X, y):
         n_samples=len(X)
-        n_features=len(X[0])
-        self.w=np.zeros()
+        n_features=X.shape[1]
+        self.w=np.zeros(n_features)
         self.b=0
 
         for _ in range(self.max_iter):
@@ -27,3 +29,17 @@ class LinearRegression:
             self.b-=self.lr*db
     def predict(self,X):
         return np.dot(X, self.w)+self.b
+
+# Generate synthetic dataset
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([2, 4, 6, 8, 10])  # y = 2x (simple linear relationship)
+
+# Train the model
+model = LinearRegression(lr=0.1, max_iter=1000)
+model.fit(X, y)
+
+# Predict on new data
+X_test = np.array([[6], [7], [8]])
+predictions = model.predict(X_test)
+
+print("Predictions:", predictions)

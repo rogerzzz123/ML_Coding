@@ -1,3 +1,5 @@
+import numpy as np
+
 class LogisticRegression:
     def __init__(self, lr, max_iter):
         self.lr=lr
@@ -25,3 +27,24 @@ class LogisticRegression:
         pred=np.dot(X, self.w)+self.b
         pred_prob=self.sigmoid(pred)
         return pred_prob
+
+
+# Generate synthetic dataset
+X_train = np.array([
+    [1, 2], [2, 3], [3, 4], [4, 5], [5, 6]
+])
+y_train = np.array([0, 0, 1, 1, 1])  # Binary labels
+
+# Train the model
+model = LogisticRegression(lr=0.1, max_iter=1000)
+model.fit(X_train, y_train)
+
+# Predict on new data
+X_test = np.array([
+    [1.5, 2.5],  # Should be close to class 0
+    [3.5, 4.5],  # Should be close to class 1
+    [5, 7]       # Should be class 1
+])
+predictions = model.predict(X_test)
+
+print("Predictions:", predictions)
