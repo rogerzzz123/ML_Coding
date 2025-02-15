@@ -38,3 +38,4 @@ class SingleHeadAttention(nn.Module):
         output=self.scaled_dot_product_attention(self, q,k,v,mask)
         output=self.output_proj(output)
         return output
+    
