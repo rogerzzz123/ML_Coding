@@ -7,6 +7,12 @@ def cross_entropy(y_true, y_pred):
     y_pred=np.clip(y_pred, epsilon, 1. - epsilon)
     return -np.sum(y_true*np.log(y_pred))/y_true.shape[0]
 
+
+def cross_entropy(y_true, y_pred):
+    eps=1e-12
+    y_pred=np.clip(y_pred, eps, 1-eps) # make it between eps and 1-eps
+    return -np.sum(y_true * np.log(y_pred))/y_true.shape[0]
+
 y_true = np.array([[1, 0, 0],  # Class 0
                    [0, 1, 0],  # Class 1
                    [0, 0, 1]]) # Class 2
